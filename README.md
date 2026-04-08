@@ -1,7 +1,7 @@
 # 🛒 Tirth Shop - E-commerce Website
 
 ## 🚀 Live Demo
-🔗 https://your-site-name.netlify.app
+novatechshop.netlify.app
 
 ---
 
