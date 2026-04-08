@@ -1,7 +1,7 @@
 # 🛒 Tirth Shop - E-commerce Website
 
 ## 🚀 Live Demo
-novatechshop.netlify.app
+links - https://novatechshop.netlify.app
 
 ---
 
@@ -41,7 +41,14 @@ This is a modern E-commerce website built using:
 - Frontend: HTML, CSS, JavaScript
 - Backend: Firebase
 - Hosting: Netlify
+ 
+---
+
+## 👨‍💻 Author
+**Tirth Suthar**
 
 ---
 
-## 📂 Folder Structure
+## ⭐ Support
+If you like this project, give it a ⭐ on GitHub!
+
