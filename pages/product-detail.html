@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product Details - NOVATECH</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pannellum@2.5.6/build/pannellum.css">
+    <link rel="stylesheet" href="../css/style.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <style>
+        .product-detail-container {
+            display: grid;
+            grid-template-columns: 1.2fr 1fr;
+            gap: 60px;
+            margin: 40px 0;
+            background: var(--surface-color);
+            padding: 30px;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow-sm);
+        }
+
+        /* Image Gallery */
+        .gallery-container {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .main-image-wrapper {
+            width: 100%;
+            height: 500px;
+            border-radius: var(--border-radius);
+            overflow: hidden;
+            position: relative;
+            background: var(--bg-color);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: zoom-in;
+        }
+
+        .main-image {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+            transition: transform 0.3s ease;
+        }
+
+        .btn-360 {
+            position: absolute;
+            bottom: 20px;
+            right: 20px;
+            background: rgba(255, 255, 255, 0.9);
+            color: var(--primary-color);
+            border: 1px solid var(--primary-color);
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-weight: 600;
+            cursor: pointer;
+            z-index: 5;
+            transition: all 0.3s;
+            backdrop-filter: blur(4px);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .btn-360:hover {
+            background: var(--primary-color);
+            color: white;
+            box-shadow: var(--shadow-md);
+        }
+
+        /* 360 Viewer Overlay */
+        .viewer-360-overlay {
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0, 0, 0, 0.9);
+            z-index: 2000;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            backdrop-filter: blur(10px);
+            padding: 40px;
+        }
+
+        .viewer-close {
+            position: absolute;
+            top: 20px;
+            right: 30px;
+            color: white;
+            font-size: 2.5rem;
+            cursor: pointer;
+            background: none;
+            border: none;
+            z-index: 2010;
+        }
+        
+        .pnlm-container {
+            border-radius: 12px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+        }
+
+        .thumbnail-list {
+            display: flex;
+            gap: 10px;
+            overflow-x: auto;
+        }
+
+        .thumbnail {
+            width: 80px;
+            height: 80px;
+            border-radius: 8px;
+            border: 2px solid transparent;
+            cursor: pointer;
+            object-fit: cover;
+            transition: border-color 0.2s;
+        }
+
+        .thumbnail.active {
+            border-color: var(--primary-color);
+        }
+
+        /* Product Info */
+        .product-meta {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+
+        .category-badge {
+            background: var(--bg-color);
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+        }
+
+        .product-title-large {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 15px;
+            line-height: 1.2;
+        }
+
+        .rating-large {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--warning-color);
+            margin-bottom: 20px;
+        }
+
+        .price-large {
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: var(--primary-color);
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .price-large .old {
+            font-size: 1.4rem;
+            color: var(--text-secondary);
+            text-decoration: line-through;
+            font-weight: 400;
+        }
+
+        .discount-badge-large {
+            background: #ef4444;
+            color: white;
+            padding: 4px 12px;
+            border-radius: 6px;
+            font-size: 0.9rem;
+            font-weight: 700;
+        }
+
+        .description {
+            font-size: 1.05rem;
+            color: var(--text-secondary);
+            margin-bottom: 30px;
+            line-height: 1.6;
+        }
+
+        .specs-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-bottom: 30px;
+            background: var(--bg-color);
+            padding: 20px;
+            border-radius: 8px;
+        }
+
+        .spec-item {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .spec-label {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+        }
+
+        .spec-value {
+            font-weight: 600;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .btn-large {
+            padding: 15px 30px;
+            font-size: 1.1rem;
+            flex: 1;
+        }
+
+        .stock-status {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: 500;
+        }
+
+        .in-stock {
+            color: var(--success-color);
+        }
+
+        .out-of-stock {
+            color: var(--danger-color);
+        }
+
+        /* Reviews Section */
+        .reviews-section {
+            margin-top: 60px;
+        }
+
+        .review-card {
+            background: var(--surface-color);
+            padding: 20px;
+            border-radius: var(--border-radius);
+            margin-bottom: 15px;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .review-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
+
+        .reviewer-name {
+            font-weight: 600;
+        }
+
+        .review-date {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        /* Related Products */
+        .related-products {
+            margin-top: 60px;
+        }
+
+        @media (max-width: 900px) {
+            .product-detail-container {
+                grid-template-columns: 1fr;
+            }
+            .action-buttons {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body class="bg-split">
+    <!-- Global 3D Background Canvas -->
+    <canvas id="bg-3d-canvas" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -2; pointer-events: none; opacity: 0.4;"></canvas>
+
+    <header>
+        <div class="container">
+            <a href="../index.html" class="logo">NOVATECH</a>
+            <nav>
+                <ul>
+                    <li><a href="../index.html">Home</a></li>
+                    <li><a href="products.html">Products</a></li>
+                    <li><a href="compare.html">Compare</a></li>
+                </ul>
+            </nav>
+            <div class="header-actions">
+                <div class="search-bar">
+                    <input type="text" id="searchInput" class="form-control" placeholder="Search products...">
+                    <i class="fas fa-search"></i>
+                    <div id="searchResults" class="glass search-results-dropdown"></div>
+                </div>
+                <button class="icon-btn" id="themeToggle"><i class="fas fa-moon"></i></button>
+                <a href="wishlist.html" class="icon-btn"><i class="far fa-heart"></i><span class="badge" id="wishlistCount">0</span></a>
+                <a href="cart.html" class="icon-btn"><i class="fas fa-shopping-cart"></i><span class="badge" id="cartCount">0</span></a>
+                <a href="login.html" class="icon-btn" id="userBtn"><i class="far fa-user"></i></a>
+            </div>
+        </div>
+    </header>
+
+    <main class="container">
+        
+        <!-- Breadcrumb -->
+        <div style="margin: 20px 0; color: var(--text-secondary); font-size: 0.9rem;">
+            <a href="../index.html">Home</a> / <a href="products.html" id="breadCategory">Category</a> / <span id="breadName" style="color: var(--text-primary); font-weight: 500;">Product Name</span>
+        </div>
+
+        <div id="productDetailWrapper">
+            <!-- Product details will be injected here -->
+        </div>
+
+        <!-- Reviews -->
+        <section class="reviews-section" id="reviewsSection">
+            <h2 class="section-title">Customer Reviews</h2>
+            
+            <div class="write-review-card" style="background:var(--surface-color); padding:20px; border-radius:var(--border-radius); box-shadow:var(--shadow-sm); margin-bottom: 30px;">
+                <h3 style="margin-bottom:15px; font-size:1.1rem;">Write a Review</h3>
+                <form id="writeReviewForm" style="display:flex; flex-direction:column; gap:15px;">
+                    <div style="display:grid; grid-template-columns: 2fr 1fr; gap: 15px;">
+                        <input type="text" id="reviewName" class="form-control" placeholder="Your Name" required>
+                        <select id="reviewRating" class="form-control" required>
+                            <option value="5">5 Stars</option>
+                            <option value="4">4 Stars</option>
+                            <option value="3">3 Stars</option>
+                            <option value="2">2 Stars</option>
+                            <option value="1">1 Star</option>
+                        </select>
+                    </div>
+                    <textarea id="reviewText" class="form-control" rows="3" placeholder="Share your thoughts about this product..." required></textarea>
+                    
+                    <div style="display:flex; align-items:center; gap: 15px;">
+                        <label for="reviewImageInput" class="btn btn-outline" style="cursor:pointer; padding: 10px 15px;">
+                            <i class="fas fa-camera" style="margin-right:8px;"></i> Upload Photo
+                        </label>
+                        <input type="file" id="reviewImageInput" accept="image/*" style="display:none;">
+                        <span id="reviewImageName" style="color:var(--text-secondary); font-size:0.9rem;">No file selected</span>
+                    </div>
+
+                    <div id="reviewImagePreview" style="display:none; margin-top:5px;">
+                         <img id="reviewImgElem" src="" style="width: 80px; height: 80px; object-fit: cover; border-radius: 8px; border: 2px solid var(--border-color);">
+                    </div>
+
+                    <button type="submit" class="btn btn-primary" style="align-self: flex-start;">Submit Review</button>
+                </form>
+            </div>
+
+            <div id="reviewsList">
+                <!-- Reviews injected -->
+            </div>
+        </section>
+
+        <!-- Related Products -->
+        <section class="related-products">
+            <h2 class="section-title">Related Products</h2>
+            <div class="product-grid" id="relatedGrid">
+                <!-- Related injected -->
+            </div>
+        </section>
+
+        <!-- Customers Also Bought -->
+        <section class="also-bought-section" style="margin-top: 60px;">
+            <h2 class="section-title">Customers Also Bought</h2>
+            <div class="product-grid" id="alsoBoughtGrid">
+                <!-- Also Bought injected -->
+            </div>
+        </section>
+
+    </main>
+
+    <footer>
+        <div class="container">
+            <div class="footer-bottom">
+                &copy; 2026 NOVATECH. All rights reserved.
+            </div>
+        </div>
+    </footer>
+
+    <!-- 360 Viewer Modal -->
+    <div class="viewer-360-overlay" id="viewer360">
+        <button class="viewer-close" onclick="close360View()"><i class="fas fa-times"></i></button>
+        <div id="panorama-container" style="width:100%; height:100%; max-width:1200px; max-height:800px;"></div>
+    </div>
+
+    <div id="toast-container"></div>
+
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/pannellum@2.5.6/build/pannellum.js"></script>
+    <script src="../js/firebase-config.js"></script>
+    <script src="../js/products-data.js"></script>
+    <script src="../js/products.js"></script>
+    <script src="../js/migrate-products.js"></script>
+    <script src="../js/firebase-reviews.js"></script>
+    <script src="../js/main.js"></script>
+    <script src="../js/product-detail.js"></script>
+    <script src="../js/compare.js"></script>
+    <script src="../js/auth.js"></script>
+    <script src="../js/3d-effects.js?v=1.1"></script>
+</body>
+</html>

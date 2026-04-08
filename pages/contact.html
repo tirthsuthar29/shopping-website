@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Us - NOVATECH</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../css/style.css">
+</head>
+<body class="bg-mesh">
+    <header>
+        <div class="container">
+            <a href="../index.html" class="logo">NOVATECH</a>
+            <nav>
+                <ul>
+                    <li><a href="../index.html">Home</a></li>
+                    <li><a href="products.html">Products</a></li>
+                    <li><a href="compare.html">Compare</a></li>
+                </ul>
+            </nav>
+            <div class="header-actions">
+                <button class="icon-btn" id="themeToggle"><i class="fas fa-moon"></i></button>
+                <a href="cart.html" class="icon-btn"><i class="fas fa-shopping-cart"></i><span class="badge" id="cartCount">0</span></a>
+                <a href="login.html" class="icon-btn" id="userBtn"><i class="far fa-user"></i></a>
+            </div>
+        </div>
+    </header>
+
+    <main style="padding: 100px 0;">
+        <div class="container">
+            <div style="max-width: 600px; margin: 0 auto; background: var(--surface-color); padding: 40px; border-radius: 16px; box-shadow: var(--shadow-md); border: 1px solid var(--border-color);">
+                <div style="text-align:center; margin-bottom: 30px;">
+                    <h1 style="font-size: 2.5rem; margin-bottom: 10px;">Contact Us</h1>
+                    <p style="color: var(--text-secondary);">Have a question or feedback? We'd love to hear from you!</p>
+                </div>
+                
+                <form id="contactForm">
+                    <div class="form-group">
+                        <label for="contactName">Full Name</label>
+                        <input type="text" id="contactName" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="contactEmail">Email Address</label>
+                        <input type="email" id="contactEmail" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="contactSubject">Subject</label>
+                        <input type="text" id="contactSubject" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="contactMessage">Message</label>
+                        <textarea id="contactMessage" class="form-control" rows="5" required></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary" style="width:100%; padding: 15px; font-size: 1.1rem; border-radius: 8px;">
+                        <i class="fas fa-paper-plane" style="margin-right:8px;"></i> Send Message
+                    </button>
+                </form>
+            </div>
+        </div>
+    </main>
+
+    <div id="toast-container"></div>
+
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
+    <script src="../js/firebase-config.js"></script>
+    <script src="../js/main.js"></script>
+    
+    <script>
+        document.getElementById('contactForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const btn = e.target.querySelector('button');
+            const originalText = btn.innerHTML;
+            btn.innerHTML = 'Sending...';
+            btn.disabled = true;
+
+            const name = document.getElementById('contactName').value.trim();
+            const email = document.getElementById('contactEmail').value.trim();
+            const subject = document.getElementById('contactSubject').value.trim();
+            const message = document.getElementById('contactMessage').value.trim();
+
+            try {
+                await db.collection('messages').add({
+                    name, email, subject, message,
+                    createdAt: firebase.firestore.FieldValue.serverTimestamp()
+                });
+                showToast("Message sent successfully!", "success");
+                document.getElementById('contactForm').reset();
+            } catch (err) {
+                console.error("Error sending message", err);
+                showToast("Failed to send message", "error");
+            } finally {
+                btn.innerHTML = originalText;
+                btn.disabled = false;
+            }
+        });
+    </script>
+</body>
+</html>

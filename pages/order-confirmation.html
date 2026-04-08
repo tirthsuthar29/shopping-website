@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order Successful - NOVATECH</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../css/style.css">
+    <style>
+        .success-container {
+            max-width: 600px;
+            margin: 60px auto;
+            text-align: center;
+            background: var(--surface-color);
+            padding: 50px 30px;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow-md);
+        }
+
+        .success-icon {
+            font-size: 5rem;
+            color: var(--success-color);
+            margin-bottom: 20px;
+            animation: popIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        @keyframes popIn {
+            0% { transform: scale(0); opacity: 0; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        .order-id-box {
+            background: var(--bg-color);
+            padding: 15px;
+            border-radius: 8px;
+            font-size: 1.2rem;
+            font-weight: 700;
+            letter-spacing: 2px;
+            margin: 25px 0;
+            display: inline-block;
+            border: 1px dashed var(--border-color);
+        }
+
+        .action-links {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            margin-top: 30px;
+        }
+
+        @media(max-width: 600px) {
+            .action-links { flex-direction: column; }
+        }
+
+        /* Print Invoice Styles */
+        @media print {
+            header, .action-links, footer, nav, .badge, .btn { display: none !important; }
+            body { background: white !important; color: black !important; }
+            .success-container { 
+                box-shadow: none !important; 
+                margin: 0 !important; 
+                padding: 0 !important; 
+                width: 100% !important;
+                max-width: none !important;
+                background: white !important;
+            }
+            .order-id-box { border: 2px solid #000 !important; padding: 20px !important; }
+            .invoice-watermark { display: block !important; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%) rotate(-45deg); opacity: 0.1; font-size: 5rem; font-weight: 900; z-index: -1; }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="container">
+            <a href="../index.html" class="logo">NOVATECH</a>
+            <nav>
+                <ul>
+                    <li><a href="../index.html">Home</a></li>
+                    <li><a href="products.html">Products</a></li>
+                    <li><a href="compare.html">Compare</a></li>
+                </ul>
+            </nav>
+            <div class="header-actions">
+                <button class="icon-btn" id="themeToggle"><i class="fas fa-moon"></i></button>
+                <a href="order-history.html" class="btn btn-primary btn-sm">My Orders</a>
+            </div>
+        </div>
+    </header>
+
+    <main class="container">
+        
+        <div class="success-container glass">
+            <i class="fas fa-check-circle success-icon"></i>
+            <h1 style="margin-bottom: 15px; font-size: 2.2rem;">Payment Successful!</h1>
+            <p style="color: var(--text-secondary); font-size: 1.1rem;">Thank you for your purchase. Your order has been placed and is being processed.</p>
+            
+            <div>
+                <div class="order-id-box" id="displayOrderId">
+                    ORD-XXXXXX
+                </div>
+            </div>
+            
+            <p style="color: var(--text-secondary); margin-bottom: 10px;">We've sent a confirmation email to your email address.</p>
+
+            <div class="action-links">
+                <button onclick="window.print()" class="btn btn-primary"><i class="fas fa-file-invoice"></i> Download Invoice</button>
+                <a href="order-history.html" class="btn btn-outline">Track Your Order</a>
+                <a href="products.html" class="btn btn-outline">Continue Shopping</a>
+            </div>
+            <div class="invoice-watermark" style="display:none;">NOVATECH OFFICIAL</div>
+        </div>
+
+    </main>
+
+    <script src="../js/main.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const urlParams = new URLSearchParams(window.location.search);
+            const id = urlParams.get('id');
+            if(id) {
+                document.getElementById('displayOrderId').textContent = id;
+            } else {
+                window.location.href = '../index.html';
+            }
+        });
+    </script>
+</body>
+</html>

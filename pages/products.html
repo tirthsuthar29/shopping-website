@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>All Products - NOVATECH</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../css/style.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <style>
+        .page-header {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            padding: 40px 0;
+            margin-bottom: 40px;
+            text-align: center;
+        }
+
+        .products-layout {
+            display: flex;
+            gap: 30px;
+        }
+
+        .sidebar {
+            width: 250px;
+            flex-shrink: 0;
+        }
+
+        .main-content {
+            flex: 1;
+        }
+
+        .filter-section {
+            margin-bottom: 30px;
+        }
+
+        .filter-title {
+            font-weight: 600;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .filter-list {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .filter-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            cursor: pointer;
+        }
+
+        .toolbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding: 15px;
+            border-radius: var(--border-radius);
+        }
+
+        .sort-select {
+            padding: 8px 15px;
+            border-radius: var(--border-radius);
+            border: 1px solid var(--border-color);
+            background: var(--surface-color);
+            color: var(--text-primary);
+        }
+
+        /* Responsive Layout */
+        @media (max-width: 768px) {
+            .products-layout {
+                flex-direction: column;
+            }
+            .sidebar {
+                width: 100%;
+            }
+            .toolbar {
+                flex-direction: column;
+                gap: 15px;
+                align-items: flex-start;
+            }
+        }
+    </style>
+</head>
+<body class="bg-dots">
+    <!-- Global 3D Background Canvas -->
+    <canvas id="bg-3d-canvas" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -2; pointer-events: none; opacity: 0.4;"></canvas>
+
+    <header>
+        <div class="container">
+            <a href="../index.html" class="logo">NOVATECH</a>
+            <nav>
+                <ul>
+                    <li><a href="../index.html">Home</a></li>
+                    <li><a href="products.html" class="active">Products</a></li>
+                    <li><a href="compare.html">Compare</a></li>
+                </ul>
+            </nav>
+            <div class="header-actions">
+                <div class="search-bar">
+                    <div class="search-input-wrapper">
+                        <input type="text" id="searchInput" class="form-control" placeholder="Search products...">
+                        <i class="fas fa-search"></i>
+                        <button id="voiceSearchBtn" class="voice-btn" title="Search by voice"><i class="fas fa-microphone"></i></button>
+                    </div>
+                    <div id="searchResults" class="glass search-results-dropdown"></div>
+                </div>
+                <button class="icon-btn" id="themeToggle"><i class="fas fa-moon"></i></button>
+                <a href="wishlist.html" class="icon-btn"><i class="far fa-heart"></i><span class="badge" id="wishlistCount">0</span></a>
+                <a href="cart.html" class="icon-btn"><i class="fas fa-shopping-cart"></i><span class="badge" id="cartCount">0</span></a>
+                <a href="login.html" class="icon-btn" id="userBtn"><i class="far fa-user"></i></a>
+            </div>
+        </div>
+    </header>
+
+    <div class="page-header">
+        <div class="container">
+            <h1 style="font-size:2.5rem; margin-bottom:10px;">Our Products</h1>
+            <p>Discover the best electronics tailored just for you.</p>
+        </div>
+    </div>
+
+    <main class="container">
+        <div class="products-layout">
+            <!-- Sidebar -->
+            <aside class="sidebar">
+                <div class="glass" style="padding: 20px; border-radius: var(--border-radius);">
+                    <div class="filter-section">
+                        <h3 class="filter-title">Search</h3>
+                        <input type="text" id="catalogSearch" class="form-control" placeholder="Search by name...">
+                    </div>
+
+                    <div class="filter-section">
+                        <h3 class="filter-title">Categories</h3>
+                        <div class="filter-list" id="categoryFilters">
+                            <label class="filter-item">
+                                <input type="radio" name="category" value="all" checked> All Categories
+                            </label>
+                            <!-- Javascript populates specific categories -->
+                        </div>
+                    </div>
+
+                    <div class="filter-section">
+                        <h3 class="filter-title">Price Range</h3>
+                        <div class="filter-list">
+                            <label class="filter-item"><input type="radio" name="price" value="all" checked> All Prices</label>
+                            <label class="filter-item"><input type="radio" name="price" value="under40k"> Under â‚¹40,000</label>
+                            <label class="filter-item"><input type="radio" name="price" value="40k-80k"> â‚¹40,000 - â‚¹80,000</label>
+                            <label class="filter-item"><input type="radio" name="price" value="over80k"> Over â‚¹80,000</label>
+                        </div>
+                    </div>
+
+                    <div class="filter-section">
+                        <h3 class="filter-title">Rating</h3>
+                        <div class="filter-list">
+                            <label class="filter-item"><input type="radio" name="rating" value="all" checked> All Ratings</label>
+                            <label class="filter-item"><input type="radio" name="rating" value="4"> 4 Stars & Up</label>
+                            <label class="filter-item"><input type="radio" name="rating" value="3"> 3 Stars & Up</label>
+                        </div>
+                    </div>
+
+                    <button id="resetFilters" class="btn btn-outline" style="width:100%;">Reset Filters</button>
+                </div>
+            </aside>
+
+            <!-- Main Content -->
+            <div class="main-content">
+                <div class="toolbar glass">
+                    <div style="display: flex; align-items: center; gap: 20px;">
+                        <div>Showing <span id="productCount">0</span> products</div>
+                        <div class="view-toggle">
+                            <button class="view-btn active" id="gridViewBtn" title="Grid View"><i class="fas fa-th-large"></i></button>
+                            <button class="view-btn" id="listViewBtn" title="List View"><i class="fas fa-list"></i></button>
+                        </div>
+                    </div>
+                    <select class="sort-select" id="sortSelect">
+                        <option value="popularity">Sort by Popularity</option>
+                        <option value="price-low">Price: Low to High</option>
+                        <option value="price-high">Price: High to Low</option>
+                        <option value="rating">Average Rating</option>
+                        <option value="newest">Newest Arrivals</option>
+                    </select>
+                </div>
+
+                <div id="activeFilters" class="active-filters-bar" style="display: none;">
+                    <!-- Filter chips will be injected here -->
+                </div>
+
+                <div class="product-grid" id="catalogGrid">
+                    <!-- Products will be injected here -->
+                </div>
+                
+                <div id="skeletonGrid" class="product-grid" style="display: none;">
+                    <!-- Skeletons will be injected here via JS -->
+                </div>
+                
+                <div style="text-align: center; margin-top: 40px; display: none;" id="noProductsFound">
+                    <div class="empty-state">
+                        <i class="fas fa-search-minus"></i>
+                        <h2>No matches found</h2>
+                        <p>We couldn't find any products matching your current filters.</p>
+                        <button id="clearAllFilters" class="btn btn-primary" style="margin-top: 15px;">Clear All Filters</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <div class="container">
+            <div class="footer-bottom">
+                &copy; 2026 NOVATECH. All rights reserved. | <a href="privacy-policy.html" style="color:var(--text-secondary); text-decoration:none;">Privacy Policy</a>
+            </div>
+        </div>
+    </footer>
+    <div id="toast-container"></div>
+
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
+    <script src="../js/firebase-config.js"></script>
+    <script src="../js/products-data.js?v=1.2"></script>
+    <script src="../js/products.js?v=1.2"></script>
+    <script src="../js/migrate-products.js?v=1.2"></script>
+    <script src="../js/main.js?v=1.2"></script>
+    <script src="../js/products-page.js?v=1.1"></script>
+    <script src="../js/tilt.js?v=1.1"></script>
+    <script src="../js/3d-effects.js?v=1.1"></script>
+</body>
+</html>

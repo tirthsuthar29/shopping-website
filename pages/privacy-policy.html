@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Privacy Policy - NOVATECH</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../css/style.css">
+    <style>
+        .legal-container {
+            max-width: 900px;
+            margin: 60px auto;
+            background: var(--surface-color);
+            padding: 50px;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow-md);
+            line-height: 1.8;
+            color: var(--text-secondary);
+        }
+
+        .legal-header {
+            text-align: center;
+            margin-bottom: 50px;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 30px;
+        }
+
+        .legal-header h1 {
+            font-size: 3rem;
+            font-weight: 800;
+            color: var(--text-primary);
+            margin-bottom: 10px;
+            letter-spacing: -1px;
+        }
+
+        .legal-section {
+            margin-bottom: 40px;
+        }
+
+        .legal-section h2 {
+            color: var(--text-primary);
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .legal-section h2::before {
+            content: '';
+            width: 4px;
+            height: 24px;
+            background: var(--primary-color);
+            border-radius: 2px;
+        }
+
+        .legal-section p {
+            margin-bottom: 15px;
+        }
+
+        .legal-section ul {
+            margin-left: 20px;
+            list-style-type: square;
+        }
+
+        .legal-footer {
+            margin-top: 60px;
+            padding-top: 30px;
+            border-top: 1px solid var(--border-color);
+            text-align: center;
+            font-size: 0.9rem;
+        }
+
+        @media (max-width: 768px) {
+            .legal-container {
+                padding: 30px 20px;
+                margin: 30px 10px;
+            }
+            .legal-header h1 {
+                font-size: 2.2rem;
+            }
+        }
+    </style>
+</head>
+<body class="bg-dots">
+    <!-- Global 3D Background Canvas -->
+    <canvas id="bg-3d-canvas" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -2; pointer-events: none; opacity: 0.4;"></canvas>
+
+    <header>
+        <div class="container">
+            <a href="../index.html" class="logo">NOVATECH</a>
+            <nav>
+                <ul>
+                    <li><a href="../index.html">Home</a></li>
+                    <li><a href="products.html">Products</a></li>
+                    <li><a href="compare.html">Compare</a></li>
+                </ul>
+            </nav>
+            <div class="header-actions">
+                <button class="icon-btn" id="themeToggle"><i class="fas fa-moon"></i></button>
+                <a href="wishlist.html" class="icon-btn"><i class="far fa-heart"></i></a>
+                <a href="cart.html" class="icon-btn"><i class="fas fa-shopping-cart"></i></a>
+                <a href="login.html" class="icon-btn" id="userBtn"><i class="far fa-user"></i></a>
+            </div>
+        </div>
+    </header>
+
+    <main class="container">
+        <div class="legal-container glass">
+            <div class="legal-header">
+                <h1>Privacy Policy</h1>
+                <p>Last updated: October 2026</p>
+            </div>
+
+            <div class="legal-section">
+                <h2>1. Introduction</h2>
+                <p>Welcome to <strong>NOVATECH</strong>. We are committed to protecting your personal data and your privacy. This policy describes how we collect, use, and handle your information when you use our website and services.</p>
+            </div>
+
+            <div class="legal-section">
+                <h2>2. Information We Collect</h2>
+                <p>We only collect the data necessary to provide you with a seamless shopping experience:</p>
+                <ul>
+                    <li><strong>Account Information:</strong> Name, email address, and authentication data (via Firebase Auth).</li>
+                    <li><strong>Shopping Data:</strong> Cart contents, wishlist items, and product comparisons.</li>
+                    <li><strong>Order History:</strong> Shipping addresses, contact numbers, and order details (stored securely in Firestore).</li>
+                    <li><strong>Technical Data:</strong> IP address, device type, and login history for security purposes.</li>
+                </ul>
+            </div>
+
+            <div class="legal-section">
+                <h2>3. How We Use Your Data</h2>
+                <p>Your information is used exclusively for:</p>
+                <ul>
+                    <li>Processing and fulfilling your orders.</li>
+                    <li>Syncing your cart and wishlist across your devices.</li>
+                    <li>Improving our store layout and product recommendations.</li>
+                    <li>Providing customer support and responding to reviews.</li>
+                </ul>
+            </div>
+
+            <div class="legal-section">
+                <h2>4. Data Storage & Security</h2>
+                <p>We use industry-standard security measures provided by <strong>Google Firebase</strong>. Your data is stored in secure cloud servers with end-to-end encryption. We do not store your credit card numbers on our servers; payments are processed through secure simulated gateways.</p>
+            </div>
+
+            <div class="legal-section">
+                <h2>5. Cookies & Tracking</h2>
+                <p>We use local storage and essential cookies to keep you logged in and remember your shopping cart. No invasive third-party tracking cookies are used for advertising.</p>
+            </div>
+
+            <div class="legal-section">
+                <h2>6. Your Rights</h2>
+                <p>You have the right to access, update, or delete your personal data at any time through your Profile page or by contacting our support team.</p>
+            </div>
+
+            <div class="legal-section">
+                <h2>7. Contact Us</h2>
+                <p>If you have any questions about this Privacy Policy, please reach out to us at:</p>
+                <p style="font-weight: 700; color: var(--primary-color);">support@NOVATECH.com</p>
+            </div>
+
+            <div class="legal-footer">
+                &copy; 2026 NOVATECH Electronics. Developed as a Diploma Final Year Project.
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <div class="container">
+            <div class="footer-bottom">
+                &copy; 2026 NOVATECH. All rights reserved.
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
+    <script src="../js/firebase-config.js"></script>
+    <script src="../js/main.js"></script>
+    <script src="../js/auth.js"></script>
+    <script src="../js/3d-effects.js"></script>
+</body>
+</html>

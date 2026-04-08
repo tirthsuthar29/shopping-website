@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NOVATECH - Modern Electronics Store</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/responsive.css">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🚀</text></svg>">
+    <link rel="stylesheet" href="css/chatbot.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+</head>
+<body class="bg-mesh"> 
+    <!-- Global 3D Background Canvas -->
+    <canvas id="bg-3d-canvas" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -2; pointer-events: none; opacity: 0.4;"></canvas>
+
+    <div class="top-ticker" style="background:var(--primary-color); color:white; text-align:center; padding:8px; font-size:0.85rem; font-weight:600; letter-spacing:0.5px;">
+        <i class="fas fa-shipping-fast" style="margin-right:8px;"></i> LIMITED TIME OFFER: FREE NEXT-DAY DELIVERY ON ALL ORDERS ABOVE ₹2000!
+    </div>
+
+    <header>
+        <div class="container">
+            <a href="index.html" class="logo">NOVATECH</a>
+            <nav>
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="pages/products.html">Products</a></li>
+                    <li><a href="pages/compare.html">Compare</a></li>
+                </ul>
+            </nav>
+            <div class="header-actions">
+                <div class="search-bar">
+                    <div class="search-input-wrapper">
+                        <input type="text" id="searchInput" class="form-control" placeholder="Search products...">
+                        <i class="fas fa-search"></i>
+                        <button id="voiceSearchBtn" class="voice-btn" title="Search by voice">
+                            <i class="fas fa-microphone"></i>
+                        </button>
+                    </div>
+                    <div id="searchResults" class="glass search-results-dropdown"></div>
+                </div>
+                <button class="icon-btn" id="themeToggle"><i class="fas fa-moon"></i></button>
+                <a href="pages/wishlist.html" class="icon-btn"><i class="far fa-heart"></i><span class="badge" id="wishlistCount">0</span></a>
+                <a href="pages/cart.html" class="icon-btn"><i class="fas fa-shopping-cart"></i><span class="badge" id="cartCount">0</span></a>
+                <a href="pages/login.html" class="icon-btn" id="userBtn"><i class="far fa-user"></i></a>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <!-- Hero Section Full Width -->
+        <section class="hero">
+            <div class="container" style="display:flex; align-items:center; width:100%;">
+                <div class="hero-content">
+                    <div class="hero-pill">
+                        <i class="fas fa-bolt"></i> New Collection 2026
+                    </div>
+                    <h1 style="font-size: 4.5rem; line-height: 1.1; margin-bottom: 24px; letter-spacing: -1.5px;">Elevate Your <br><span class="text-gradient">Digital Lifestyle</span></h1>
+
+                    <p style="font-size: 1.3rem; margin-bottom: 40px; color: var(--text-secondary); max-width: 90%;">Immersive audio, powerful computing, and smart living. Experience the pinnacle of technological innovation today.</p>
+                    <div style="display:flex; gap: 20px;">
+                        <a href="pages/products.html" class="btn btn-primary btn-lg" style="padding: 1.2rem 2.5rem; border-radius: 50px;">Discover Now</a>
+                        <a href="pages/compare.html" class="btn btn-outline btn-lg" style="padding: 1.2rem 2.5rem; border-radius: 50px;">Compare AI</a>
+                    </div>
+                </div>
+                <div class="hero-image-container" id="hero3dContainer" style="height:450px; position:relative; cursor:move;">
+                    <div style="position: absolute; width: 100%; height: 100%; background: radial-gradient(circle, var(--primary-color) 0%, transparent 60%); opacity: 0.1; filter: blur(40px); z-index: -1; transform: scale(1.5);"></div>
+                    <!-- 3D Canvas will be injected here -->
+                    <div id="three-canvas-container" style="width:100%; height:100%;"></div>
+                </div>
+            </div>
+        </section>
+
+        <div class="container">
+
+            <!-- Brands Section -->
+            <section style="margin: 40px 0; padding: 25px 0; border-top: 1px solid rgba(0,0,0,0.05); border-bottom: 1px solid rgba(0,0,0,0.05);">
+                <div style="display:flex; justify-content:space-around; align-items:center; opacity:0.5; filter:grayscale(100%); gap:40px; flex-wrap:wrap;">
+                    <span style="font-weight:900; font-size:1.4rem; letter-spacing:-1px; color:var(--text-secondary);"><i class="fab fa-apple"></i> APPLE</span>
+                    <span style="font-weight:900; font-size:1.4rem; letter-spacing:-1px; color:var(--text-secondary);"><i class="fas fa-mobile-alt"></i> SAMSUNG</span>
+                    <span style="font-weight:900; font-size:1.4rem; letter-spacing:-1px; color:var(--text-secondary);"><i class="fab fa-playstation"></i> SONY</span>
+                    <span style="font-weight:900; font-size:1.4rem; letter-spacing:-1px; color:var(--text-secondary);"><i class="fas fa-laptop-code"></i> DELL</span>
+                    <span style="font-weight:900; font-size:1.4rem; letter-spacing:-1px; color:var(--text-secondary);"><i class="fas fa-microchip"></i> NVIDIA</span>
+                </div>
+            </section>
+
+            <!-- Categories -->
+            <section style="margin: 40px 0;">
+                <h2 class="section-title">Shop by Category</h2>
+                <div class="categories-scroll" id="categoriesContainer">
+                    <!-- Javascript will populate categories -->
+                </div>
+            </section>
+
+            <!-- Recently Launched -->
+            <section style="margin: 60px 0;">
+                <div style="display:flex; justify-content:space-between; align-items:flex-end; margin-bottom: 30px;">
+                    <div>
+                        <h2 class="section-title" style="margin-bottom: 5px;">Recently Launched</h2>
+                        <p style="color: var(--text-secondary);">The latest technology just added to our collection.</p>
+                    </div>
+                    <a href="pages/products.html?sort=newest" class="btn btn-outline">Explore All</a>
+                </div>
+                <div class="product-grid" id="newArrivalsGrid">
+                    <!-- Products will be injected here -->
+                </div>
+            </section>
+
+            <!-- FLASH SALE SECTION -->
+            <section style="margin: 80px 0; background: rgba(239, 68, 68, 0.05); padding: 50px; border-radius: 30px; border: 1px dashed #ef4444;">
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 40px;">
+                    <div>
+                        <div style="display:flex; align-items:center; gap:10px; color:#ef4444; font-weight:800; text-transform:uppercase; font-size:0.9rem; margin-bottom:10px;">
+                            <i class="fas fa-fire"></i> Hot Deals
+                        </div>
+                        <h2 class="section-title" style="margin:0;">Flash Sale products</h2>
+                    </div>
+                </div>
+                <div class="product-grid" id="dealsGrid">
+                    <!-- Only products with discounts will show here -->
+                </div>
+            </section>
+
+            <!-- Trending Section -->
+            <section style="margin: 60px 0;">
+                <h2 class="section-title">Trending Products</h2>
+                <div class="product-grid" id="featuredGrid">
+                    <!-- Products will be injected here -->
+                </div>
+            </section>
+
+            <!-- AI Recommendation Mock -->
+            <section style="margin: 60px 0; padding: 40px; border-radius: 20px;" class="glass">
+                <div style="text-align:center; margin-bottom: 30px;">
+                    <i class="fas fa-magic" style="font-size: 2rem; color: var(--accent-color); margin-bottom: 10px;"></i>
+                    <h2 style="margin-bottom: 10px;">Smart Recommendations For You</h2>
+                    <p style="color: var(--text-secondary);">Based on popular trends and viewing history</p>
+                </div>
+                <div class="product-grid" id="recommendationsGrid">
+                    <!-- Products will be injected here -->
+                </div>
+            </section>
+
+            <!-- Social Proof Gallery -->
+            <section style="margin: 60px 0;">
+                <div style="text-align:center; margin-bottom: 40px;">
+                    <h2 class="section-title">Verified Customer Stories</h2>
+                    <p style="color: var(--text-secondary);">Real photos from real customers using our products.</p>
+                </div>
+                <div id="homeSocialGallery" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 20px;">
+                    <!-- Photos will be injected here -->
+                </div>
+            </section>
+
+
+        </div>
+    </main>
+
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-col">
+                    <h3 class="logo" style="margin-bottom: 15px; font-size: 1.2rem;">NOVATECH</h3>
+                    <p style="color: var(--text-secondary); margin-bottom: 15px;">Your one-stop destination for all premium electronics. Diploma Final Year Project.</p>
+                    <div style="display: flex; gap: 15px;">
+                        <a href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                    </div>
+                </div>
+                <div class="footer-col">
+                    <h3>Quick Links</h3>
+                    <ul>
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="pages/products.html">All Products</a></li>
+                        <li><a href="pages/cart.html">Shopping Cart</a></li>
+                        <li><a href="pages/wishlist.html">Wishlist</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h3>Customer Service</h3>
+                    <ul>
+                        <li><a href="pages/order-tracking.html">Track Order</a></li>
+                        <li><a href="pages/returns-refunds.html">Returns & Refunds</a></li>
+                        <li><a href="pages/faq.html">FAQ</a></li>
+                        <li><a href="pages/contact.html">Contact Us</a></li>
+                        <li><a href="pages/privacy-policy.html">Privacy Policy</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                &copy; 2026 NOVATECH. All rights reserved.
+            </div>
+        </div>
+    </footer>
+
+    <div id="toast-container"></div>
+
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
+    <script src="js/firebase-config.js"></script>
+        <script src="js/products.js"></script>
+        <script src="js/firebase-reviews.js"></script>
+    <script src="js/main.js"></script>
+    <script src="js/index.js"></script>
+    <script src="js/tilt.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/chatbot.js"></script>
+    <script src="js/3d-effects.js"></script>
+</body>
+
+
+</html>

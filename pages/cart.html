@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shopping Cart - NOVATECH</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../css/style.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <style>
+        .cart-layout {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 30px;
+            margin: 40px 0;
+        }
+
+        .cart-items {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .cart-item {
+            background: var(--surface-color);
+            padding: 20px;
+            border-radius: var(--border-radius);
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .cart-item img {
+            width: 100px;
+            height: 100px;
+            object-fit: cover;
+            border-radius: 8px;
+        }
+
+        .item-details {
+            flex: 1;
+        }
+
+        .item-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+
+        .item-price {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--primary-color);
+        }
+
+        .quantity-control {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background: var(--bg-color);
+            padding: 5px 10px;
+            border-radius: 20px;
+        }
+
+        .quantity-btn {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 1.2rem;
+            color: var(--text-primary);
+            width: 25px;
+            height: 25px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .remove-btn {
+            color: var(--danger-color);
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            padding: 10px;
+            transition: transform 0.2s;
+        }
+        
+        .remove-btn:hover {
+            transform: scale(1.1);
+        }
+
+        /* Order Summary */
+        .summary-card {
+            background: var(--surface-color);
+            padding: 25px;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow-sm);
+            height: fit-content;
+            position: sticky;
+            top: 90px;
+        }
+
+        .summary-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .summary-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 15px;
+            color: var(--text-secondary);
+        }
+
+        .summary-total {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 2px dashed var(--border-color);
+            font-size: 1.25rem;
+            font-weight: 800;
+            color: var(--text-primary);
+        }
+
+        .empty-cart {
+            text-align: center;
+            padding: 60px 20px;
+            background: var(--surface-color);
+            border-radius: var(--border-radius);
+            grid-column: 1 / -1;
+        }
+
+        @media (max-width: 768px) {
+            .cart-layout {
+                grid-template-columns: 1fr;
+            }
+            .cart-item {
+                flex-direction: column;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+<body class="bg-dots">
+    <!-- Global 3D Background Canvas -->
+    <canvas id="bg-3d-canvas" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -2; pointer-events: none; opacity: 0.4;"></canvas>
+
+    <header>
+        <div class="container">
+            <a href="../index.html" class="logo">NOVATECH</a>
+            <nav>
+                <ul>
+                    <li><a href="../index.html">Home</a></li>
+                    <li><a href="products.html">Products</a></li>
+                    <li><a href="compare.html">Compare</a></li>
+                </ul>
+            </nav>
+            <div class="header-actions">
+                <div class="search-bar">
+                    <input type="text" id="searchInput" class="form-control" placeholder="Search products...">
+                    <i class="fas fa-search"></i>
+                    <div id="searchResults" class="glass search-results-dropdown"></div>
+                </div>
+                <button class="icon-btn" id="themeToggle"><i class="fas fa-moon"></i></button>
+                <a href="wishlist.html" class="icon-btn"><i class="far fa-heart"></i><span class="badge" id="wishlistCount">0</span></a>
+                <a href="cart.html" class="icon-btn"><i class="fas fa-shopping-cart" style="color:var(--primary-color);"></i><span class="badge" id="cartCount">0</span></a>
+                <a href="login.html" class="icon-btn" id="userBtn"><i class="far fa-user"></i></a>
+            </div>
+        </div>
+    </header>
+
+    <main class="container">
+        
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-top: 40px; margin-bottom: 20px;">
+            <h1 class="section-title" style="margin:0;">Your Shopping Cart</h1>
+            <button class="btn btn-outline" id="clearCartBtn" style="border-radius:20px; padding:8px 20px; font-size:0.9rem;">
+                <i class="fas fa-trash-alt" style="margin-right:8px;"></i> Clear Cart
+            </button>
+        </div>
+
+        <div class="cart-layout" id="cartLayout">
+            <!-- Left: Items -->
+            <div class="cart-items" id="cartItemsContainer">
+                <!-- Javascript injects cart items -->
+            </div>
+
+            <!-- Right: Summary -->
+            <div class="summary-card" id="summaryCard">
+                <h3 class="summary-title">Order Summary</h3>
+                <div class="summary-row">
+                    <span>Subtotal (<span id="summaryCount">0</span> items)</span>
+                    <span id="summarySubtotal">â‚¹0.00</span>
+                </div>
+                <div class="summary-row" style="color: var(--success-color);">
+                    <span>Total Discount</span>
+                    <span id="summaryDiscount">-â‚¹0.00</span>
+                </div>
+                <div class="summary-row">
+                    <span>Shipping</span>
+                    <span>Free</span>
+                </div>
+                <div class="summary-row">
+                    <span>Tax (Estimated)</span>
+                    <span id="summaryTax">â‚¹0.00</span>
+                </div>
+                <div class="summary-total">
+                    <span>Total</span>
+                    <span id="summaryTotal">â‚¹0.00</span>
+                </div>
+                <a href="checkout.html" class="btn btn-primary" style="width: 100%; margin-top: 25px; padding: 15px; font-size: 1.1rem;">
+                    Proceed to Checkout <i class="fas fa-lock" style="margin-left:8px;"></i>
+                </a>
+                <a href="products.html" class="btn btn-outline" style="width: 100%; margin-top: 15px;">Continue Shopping</a>
+            </div>
+        </div>
+
+    </main>
+
+    <footer>
+        <div class="container">
+            <div class="footer-bottom">
+                &copy; 2026 NOVATECH. All rights reserved. | <a href="privacy-policy.html" style="color:var(--text-secondary); text-decoration:none;">Privacy Policy</a>
+            </div>
+        </div>
+    </footer>
+
+    <div id="toast-container"></div>
+
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
+    <script src="../js/firebase-config.js"></script>
+    <script src="../js/products-data.js?v=1.1"></script>
+    <script src="../js/products.js"></script>
+    <script src="../js/main.js"></script>
+    <script src="../js/cart.js"></script>
+    <script src="../js/3d-effects.js?v=1.1"></script>
+</body>
+</html>

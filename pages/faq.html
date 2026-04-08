@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FAQ - NOVATECH</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../css/style.css">
+    <style>
+        .faq-item {
+            background: var(--surface-color);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            margin-bottom: 20px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+        .faq-question {
+            padding: 20px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+            background: transparent;
+            border: none;
+            width: 100%;
+            text-align: left;
+            color: var(--text-color);
+        }
+        .faq-question:hover {
+            color: var(--primary-color);
+        }
+        .faq-answer {
+            padding: 0 20px;
+            max-height: 0;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            color: var(--text-secondary);
+        }
+        .faq-item.active .faq-answer {
+            padding: 0 20px 20px;
+            max-height: 500px;
+        }
+        .faq-item.active .faq-question i {
+            transform: rotate(180deg);
+            color: var(--primary-color);
+        }
+        .faq-question i {
+            transition: transform 0.3s ease;
+        }
+    </style>
+</head>
+<body class="bg-mesh">
+    <header>
+        <div class="container">
+            <a href="../index.html" class="logo">NOVATECH</a>
+            <nav>
+                <ul>
+                    <li><a href="../index.html">Home</a></li>
+                    <li><a href="products.html">Products</a></li>
+                    <li><a href="compare.html">Compare</a></li>
+                </ul>
+            </nav>
+            <div class="header-actions">
+                <button class="icon-btn" id="themeToggle"><i class="fas fa-moon"></i></button>
+                <a href="cart.html" class="icon-btn"><i class="fas fa-shopping-cart"></i><span class="badge" id="cartCount">0</span></a>
+                <a href="login.html" class="icon-btn" id="userBtn"><i class="far fa-user"></i></a>
+            </div>
+        </div>
+    </header>
+
+    <main style="padding: 100px 0;">
+        <div class="container">
+            <div style="max-width: 800px; margin: 0 auto;">
+                <div style="text-align:center; margin-bottom: 50px;">
+                    <h1 style="font-size: 3rem; margin-bottom: 10px;">Frequently Asked Questions</h1>
+                    <p style="color: var(--text-secondary); font-size: 1.2rem;">Quick answers to help you with your premium electronic shopping experience.</p>
+                </div>
+                
+                <div class="faq-list">
+                    <div class="faq-item">
+                        <button class="faq-question">What payment methods do you accept? <i class="fas fa-chevron-down"></i></button>
+                        <div class="faq-answer">
+                            <p>We accept all major credit and debit cards, PayPal, Apple Pay, and Google Pay. We also offer EMI options on select premium electronics.</p>
+                        </div>
+                    </div>
+                    <div class="faq-item">
+                        <button class="faq-question">How can I track my order? <i class="fas fa-chevron-down"></i></button>
+                        <div class="faq-answer">
+                            <p>Once your order is placed, you will receive a unique Tracking ID. Visit the <a href="order-tracking.html" style="color:var(--primary-color);">Order Tracking</a> page and enter your ID to see real-time updates directly from our system.</p>
+                        </div>
+                    </div>
+                    <div class="faq-item">
+                        <button class="faq-question">Do products come with an official warranty? <i class="fas fa-chevron-down"></i></button>
+                        <div class="faq-answer">
+                            <p>Yes, all devices and electronics sold on NOVATECH are 100% authentic and come with a standard manufacturer's warranty ranging from 1 to 3 years depending on the brand.</p>
+                        </div>
+                    </div>
+                    <div class="faq-item">
+                        <button class="faq-question">Can I cancel my order? <i class="fas fa-chevron-down"></i></button>
+                        <div class="faq-answer">
+                            <p>You can cancel your order within 24 hours of placing it, as long as it hasn't been shipped yet. Once shipped, you'll need to follow our returns process.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script src="../js/main.js"></script>
+    <script>
+        document.querySelectorAll('.faq-question').forEach(button => {
+            button.addEventListener('click', () => {
+                const item = button.parentElement;
+                // Close others
+                document.querySelectorAll('.faq-item').forEach(other => {
+                    if (other !== item) other.classList.remove('active');
+                });
+                // Toggle current
+                item.classList.toggle('active');
+            });
+        });
+    </script>
+</body>
+</html>

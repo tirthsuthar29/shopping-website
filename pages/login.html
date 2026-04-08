@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - NOVATECH</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="../css/style.css">
+    <style>
+        .auth-container {
+            max-width: 450px;
+            margin: 60px auto;
+            padding: 40px;
+            background: var(--surface-color);
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow-md);
+            border: 1px solid var(--border-color);
+        }
+
+        .auth-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .auth-header h1 {
+            font-size: 2rem;
+            margin-bottom: 10px;
+            color: var(--primary-color);
+        }
+
+        .auth-header p {
+            color: var(--text-secondary);
+        }
+
+        .error-message {
+            color: var(--danger-color);
+            font-size: 0.9rem;
+            margin-top: 5px;
+            display: none;
+        }
+
+        .form-btn {
+            width: 100%;
+            padding: 12px;
+            font-size: 1.1rem;
+            margin-top: 10px;
+            cursor: pointer;
+        }
+
+        .auth-footer {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 0.95rem;
+        }
+
+        .auth-footer a {
+            color: var(--primary-color);
+            font-weight: 600;
+        }
+
+        .social-login {
+            display: flex;
+            gap: 15px;
+            margin-top: 25px;
+        }
+
+        .social-btn {
+            flex: 1;
+            padding: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            border: 1px solid var(--border-color);
+            border-radius: var(--border-radius);
+            background: transparent;
+            cursor: pointer;
+            color: var(--text-primary);
+            transition: background 0.2s;
+        }
+
+        .social-btn:hover {
+            background: var(--bg-color);
+        }
+    </style>
+</head>
+
+<body class="bg-mesh">
+
+    <header>
+        <div class="container">
+            <a href="../index.html" class="logo">NOVATECH</a>
+            <nav>
+                <ul>
+                    <li><a href="../index.html">Home</a></li>
+                    <li><a href="products.html">Products</a></li>
+                    <li><a href="compare.html">Compare</a></li>
+                </ul>
+            </nav>
+            <div class="header-actions">
+                <div class="search-bar">
+                    <input type="text" id="searchInput" class="form-control" placeholder="Search products...">
+                    <i class="fas fa-search"></i>
+                    <div id="searchResults" class="glass search-results-dropdown"></div>
+                </div>
+                <button class="icon-btn" id="themeToggle"><i class="fas fa-moon"></i></button>
+                <a href="wishlist.html" class="icon-btn"><i class="far fa-heart"></i><span class="badge"
+                        id="wishlistCount">0</span></a>
+                <a href="cart.html" class="icon-btn"><i class="fas fa-shopping-cart"></i><span class="badge"
+                        id="cartCount">0</span></a>
+                <a href="login.html" class="icon-btn" id="userBtn"><i class="fas fa-user"
+                        style="color:var(--primary-color);"></i></a>
+            </div>
+        </div>
+    </header>
+
+    <main class="container">
+        <div class="auth-container glass" id="loginWrapper">
+            <!-- If logged in, auth.js will replace this content -->
+            <div id="loginFormArea">
+                <div class="auth-header">
+                    <h1>Welcome Back</h1>
+                    <p>Enter your details to access your account</p>
+                </div>
+
+                <form id="loginForm">
+                    <div class="form-group">
+                        <label for="email">Email or Username</label>
+                        <input type="text" id="email" class="form-control" placeholder="Email" required>
+                        <div class="error-message" id="emailError">Please enter a valid handle</div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="password">Password</label>
+                        <input type="password" id="password" class="form-control" placeholder="*************" required>
+                        <div class="error-message" id="passwordError">Password is required</div>
+                    </div>
+
+                    <div style="display:flex; justify-content:space-between; margin-bottom:15px; font-size:0.9rem;">
+                        <label style="display:flex; align-items:center; gap:8px;">
+                            <input type="checkbox" id="rememberMe"> Remember me
+                        </label>
+                        <a href="#" style="color:var(--primary-color);">Forgot Password?</a>
+                    </div>
+
+                    <div style="margin-bottom:20px;">
+                        <label
+                            style="display:flex; align-items:flex-start; gap:10px; font-size:0.85rem; line-height:1.4; color:var(--text-secondary);">
+                            <input type="checkbox" id="agreeTerms" style="margin-top:2px;">
+                            <span>I agree to the <a href="privacy-policy.html"
+                                    style="color:var(--primary-color);">Privacy Policy</a> and <a href="#"
+                                    style="color:var(--primary-color);">Terms</a></span>
+                        </label>
+                    </div>
+
+                    <div class="error-message" id="genericError"
+                        style="text-align:center; font-weight:600; margin-bottom:15px;">Invalid email or password</div>
+
+                    <button type="submit" class="btn btn-primary form-btn">Sign In</button>
+
+                    <div style="text-align:center; margin: 20px 0; color:var(--text-secondary); position:relative;">
+                        <span
+                            style="background:var(--surface-color); padding:0 10px; position:relative; z-index:1;">OR</span>
+                        <hr
+                            style="position:absolute; top:50%; width:100%; border:none; border-top:1px solid var(--border-color); z-index:0; margin:0;">
+                    </div>
+
+                    <div class="social-login">
+                        <button type="button" class="social-btn" onclick="showToast('Social login simulated', 'info')">
+                            <i class="fab fa-google" style="color:#DB4437;"></i> Google
+                        </button>
+                        <button type="button" class="social-btn" onclick="showToast('Social login simulated', 'info')">
+                            <i class="fab fa-apple"></i> Apple
+                        </button>
+                    </div>
+                </form>
+
+                <div class="auth-footer">
+                    Don't have an account? <a href="signup.html">Sign Up</a>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <div id="toast-container"></div>
+
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
+    <script src="../js/firebase-config.js"></script>
+    <script src="../js/products-data.js"></script>
+    <script src="../js/products.js"></script>
+    <script src="../js/main.js"></script>
+    <script src="../js/auth.js"></script>
+</body>
+
+</html>

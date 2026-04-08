@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Profile - NOVATECH</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../css/style.css">
+    <style>
+        .profile-container {
+            display: grid;
+            grid-template-columns: 300px 1fr;
+            gap: 30px;
+            margin-top: 40px;
+        }
+
+        .profile-sidebar {
+            background: var(--surface-color);
+            padding: 30px;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow-sm);
+            height: fit-content;
+        }
+
+        .profile-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .profile-avatar {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            background: var(--primary-color);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+            margin: 0 auto 15px;
+        }
+
+        .profile-nav {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .profile-nav-btn {
+            padding: 12px 20px;
+            border-radius: var(--border-radius);
+            border: none;
+            background: transparent;
+            color: var(--text-primary);
+            text-align: left;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            transition: all 0.3s;
+        }
+
+        .profile-nav-btn.active, .profile-nav-btn:hover {
+            background: var(--primary-color);
+            color: white;
+        }
+
+        .profile-content {
+            background: var(--surface-color);
+            padding: 40px;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 25px;
+            margin-top: 20px;
+        }
+
+        .info-card {
+            background: var(--bg-color);
+            padding: 20px;
+            border-radius: var(--border-radius);
+            border: 1px solid var(--border-color);
+        }
+
+        .info-label {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            margin-bottom: 5px;
+        }
+
+        .info-value {
+            font-weight: 600;
+            font-size: 1.1rem;
+        }
+
+        .order-history-list {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .order-history-item {
+            padding: 20px;
+            background: var(--bg-color);
+            border-radius: var(--border-radius);
+            border: 1px solid var(--border-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        @media (max-width: 768px) {
+            .profile-container {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body class="bg-dots">
+
+    <header>
+        <div class="container">
+            <a href="../index.html" class="logo">NOVATECH</a>
+            <nav>
+                <ul>
+                    <li><a href="../index.html">Home</a></li>
+                    <li><a href="products.html">Products</a></li>
+                    <li><a href="compare.html">Compare</a></li>
+                </ul>
+            </nav>
+            <div class="header-actions">
+                <div class="search-bar">
+                    <input type="text" id="searchInput" class="form-control" placeholder="Search products...">
+                    <i class="fas fa-search"></i>
+                    <div id="searchResults" class="glass search-results-dropdown"></div>
+                </div>
+                <button class="icon-btn" id="themeToggle"><i class="fas fa-moon"></i></button>
+                <a href="wishlist.html" class="icon-btn"><i class="far fa-heart"></i><span class="badge" id="wishlistCount">0</span></a>
+                <a href="cart.html" class="icon-btn"><i class="fas fa-shopping-cart"></i><span class="badge" id="cartCount">0</span></a>
+                <a href="profile.html" class="icon-btn active"><i class="far fa-user"></i></a>
+            </div>
+        </div>
+    </header>
+
+    <main class="container">
+        <div class="profile-container">
+            <!-- Sidebar -->
+            <aside class="profile-sidebar glass">
+                <div class="profile-header">
+                    <div class="profile-avatar" id="avatarInitial">U</div>
+                    <h2 id="profileName">User Name</h2>
+                    <p id="profileRole" style="color:var(--text-secondary); font-size:0.9rem;">Member since 2024</p>
+                </div>
+                <nav class="profile-nav">
+                    <button class="profile-nav-btn active" data-target="overview"><i class="fas fa-th-large"></i> Overview</button>
+                    <button class="profile-nav-btn" data-target="orders"><i class="fas fa-box"></i> Order History</button>
+                    <button class="profile-nav-btn" data-target="business"><i class="fas fa-store"></i> Business Portal</button>
+                    <button class="profile-nav-btn" data-target="settings"><i class="fas fa-cog"></i> Settings</button>
+                    <button onclick="logout()" class="profile-nav-btn" style="color: var(--danger-color); margin-top: 20px;"><i class="fas fa-sign-out-alt"></i> Logout</button>
+                </nav>
+            </aside>
+
+            <!-- Content -->
+            <div class="profile-content glass" id="profileContent">
+                <div id="overviewSection">
+                    <h2 style="margin-bottom: 20px;">Account Overview</h2>
+                    <div class="info-grid">
+                        <div class="info-card">
+                            <div class="info-label">Full Name</div>
+                            <div class="info-value" id="dispName">Loading...</div>
+                        </div>
+                        <div class="info-card">
+                            <div class="info-label">Email Address</div>
+                            <div class="info-value" id="dispEmail">Loading...</div>
+                        </div>
+                        <div class="info-card">
+                            <div class="info-label">Phone Number</div>
+                            <div class="info-value" id="dispPhone">Not set</div>
+                        </div>
+                        <div class="info-card">
+                            <div class="info-label">Joined Date</div>
+                            <div class="info-value" id="dispJoinDate">--/--/----</div>
+                        </div>
+                    </div>
+
+                    <div style="margin-top: 40px;">
+                        <h3>Shipping Address</h3>
+                        <div class="info-card" style="margin-top: 15px;">
+                            <div id="dispAddress">No address saved yet.</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="ordersSection" style="display: none;">
+                    <h2>Order History</h2>
+                    <div class="order-history-list" id="orderHistoryList">
+                        <!-- Populated by JS -->
+                    </div>
+                    <div id="noOrders" style="display:none; text-align:center; padding: 40px;">
+                        <i class="fas fa-shopping-bag" style="font-size: 3rem; color: var(--text-secondary); margin-bottom: 15px;"></i>
+                        <p>You haven't placed any orders yet.</p>
+                        <a href="products.html" class="btn btn-primary" style="margin-top: 15px;">Start Shopping</a>
+                    </div>
+                </div>
+
+                <div id="businessSection" style="display: none;">
+                    <h2>Business Portal</h2>
+                    
+                    <!-- Upgrade to Seller State -->
+                    <div id="upgradeToSeller" style="display:none; text-align:center; padding: 40px; background:var(--bg-color); border-radius:var(--border-radius); border:1px solid var(--border-color); margin-top:20px;">
+                        <i class="fas fa-briefcase" style="font-size: 3rem; color: var(--primary-color); margin-bottom: 15px;"></i>
+                        <h3 style="margin-bottom:10px;">Become a NOVATECH Seller</h3>
+                        <p style="color:var(--text-secondary); margin-bottom: 25px;">Upgrade to a Busscon account to list your own products and reach thousands of customers.</p>
+                        <button id="upgradeBtn" class="btn btn-primary">Convert to Business Account</button>
+                    </div>
+
+                    <!-- Seller Dashboard State -->
+                    <div id="sellerDashboard" style="display:none; margin-top: 20px;">
+                        <div style="display:flex; justify-content:space-between; align-items:flex-end; margin-bottom:20px;">
+                            <h3>Your Products</h3>
+                            <button id="showAddProductBtn" class="btn btn-outline"><i class="fas fa-plus"></i> Add New</button>
+                        </div>
+                        
+                        <!-- Add Product Form -->
+                        <form id="sellerProductForm" style="display:none; background:var(--bg-color); padding:20px; border-radius:var(--border-radius); margin-bottom:30px; border:1px solid var(--border-color);">
+                            <h4>Add a New Product</h4>
+                            <div class="form-group" style="margin-top:15px;">
+                                <label>Product Name</label>
+                                <input type="text" id="sellerProdName" class="form-control" required>
+                            </div>
+                            <div style="display:flex; gap:15px; margin-bottom:15px;">
+                                <div class="form-group" style="flex:1;">
+                                    <label>Category</label>
+                                    <select id="sellerProdCategory" class="form-control" required>
+                                        <option value="Phones">Phones</option>
+                                        <option value="Laptops">Laptops</option>
+                                        <option value="Accessories">Accessories</option>
+                                        <option value="Audio">Audio</option>
+                                    </select>
+                                </div>
+                                <div class="form-group" style="flex:1;">
+                                    <label>Price ($)</label>
+                                    <input type="number" id="sellerProdPrice" class="form-control" min="1" step="0.01" required>
+                                </div>
+                            </div>
+                            <div class="form-group" style="margin-bottom:15px;">
+                                <label>Front Product Image <span style="color:var(--danger-color);">*</span></label>
+                                <input type="file" id="sellerProdImage" class="form-control" accept="image/*" required>
+                                <img id="sellerPreview" src="" style="display:none; max-width:150px; margin-top:10px; border-radius:8px;">
+                                <input type="hidden" id="sellerProdBase64">
+                            </div>
+                            <div class="form-group" style="margin-bottom:15px;">
+                                <label>360Â° Panoramic Image (Optional)</label>
+                                <input type="file" id="sellerProdImage360" class="form-control" accept="image/*">
+                                <img id="sellerPreview360" src="" style="display:none; max-width:150px; height:80px; object-fit:cover; margin-top:10px; border-radius:8px;">
+                                <input type="hidden" id="sellerProdBase360">
+                            </div>
+                            <div class="form-group" style="margin-bottom:15px;">
+                                <label class="form-label">Description</label>
+                                <textarea id="sellerProdDesc" class="form-control" rows="2" required></textarea>
+                            </div>
+                            <!-- Additional Angles -->
+                            <div style="display:grid; grid-template-columns: 1fr 1fr 1fr; gap:15px; margin-bottom:20px; background:var(--bg-color); padding:15px; border-radius:8px; border:1px solid var(--border-color);">
+                                <h5 style="grid-column: 1 / -1; margin-top:0; margin-bottom:5px;">Additional Angles</h5>
+                                <div class="form-group">
+                                    <label style="font-size:0.85rem;">Top</label>
+                                    <input type="file" id="sellerProdImageTop" class="form-control" accept="image/*">
+                                    <input type="hidden" id="sellerProdBaseTop" value="">
+                                    <img id="sellerPreviewTop" src="" style="display:none; max-width:100%; height:60px; object-fit:contain; margin-top:10px; background:white; border-radius:4px;">
+                                </div>
+                                <div class="form-group">
+                                    <label style="font-size:0.85rem;">Back</label>
+                                    <input type="file" id="sellerProdImageBack" class="form-control" accept="image/*">
+                                    <input type="hidden" id="sellerProdBaseBack" value="">
+                                    <img id="sellerPreviewBack" src="" style="display:none; max-width:100%; height:60px; object-fit:contain; margin-top:10px; background:white; border-radius:4px;">
+                                </div>
+                                <div class="form-group">
+                                    <label style="font-size:0.85rem;">Side</label>
+                                    <input type="file" id="sellerProdImageSide" class="form-control" accept="image/*">
+                                    <input type="hidden" id="sellerProdBaseSide" value="">
+                                    <img id="sellerPreviewSide" src="" style="display:none; max-width:100%; height:60px; object-fit:contain; margin-top:10px; background:white; border-radius:4px;">
+                                </div>
+                            </div>
+                            <button type="submit" class="btn btn-primary" id="sellerSubmitBtn">List Product</button>
+                            <button type="button" class="btn btn-outline" id="cancelAddProduct">Cancel</button>
+                        </form>
+
+                        <!-- Seller Products List -->
+                        <div id="sellerProductsList" style="display:grid; grid-template-columns:1fr; gap:15px;">
+                            <!-- Populated via JS -->
+                        </div>
+                    </div>
+                </div>
+
+                <div id="settingsSection" style="display: none;">
+                    <h2>Account Settings</h2>
+                    <form id="updateProfileForm" style="margin-top: 20px;">
+                        <div class="form-group">
+                            <label class="form-label">Display Name</label>
+                            <input type="text" id="newName" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Phone Number</label>
+                            <input type="tel" id="newPhone" class="form-control">
+                        </div>
+                        
+                        <h3 style="margin: 30px 0 15px;">Preferences</h3>
+                        <div class="switch-group">
+                            <span>Enable Email Notifications</span>
+                            <label class="switch">
+                                <input type="checkbox" checked>
+                                <span class="slider"></span>
+                            </label>
+                        </div>
+                        <div class="switch-group">
+                            <span>Show Public Profile</span>
+                            <label class="switch">
+                                <input type="checkbox">
+                                <span class="slider"></span>
+                            </label>
+                        </div>
+                        <div class="switch-group" style="border-bottom:none;">
+                            <span>Two-Factor Authentication</span>
+                            <label class="switch">
+                                <input type="checkbox">
+                                <span class="slider"></span>
+                            </label>
+                        </div>
+
+                        <div class="form-group" style="margin-top:20px;">
+                            <label class="form-label">Default Shipping Address</label>
+                            <textarea id="newAddress" class="form-control" rows="3"></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary btn-lg" style="width:100%;">Save Changes</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <div id="toast-container"></div>
+
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
+    <script src="../js/firebase-config.js"></script>
+    <script src="../js/products.js"></script>
+    <script src="../js/main.js"></script>
+    <script src="../js/profile.js"></script>
+</body>
+</html>
